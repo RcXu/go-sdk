@@ -62,7 +62,7 @@ func main() {
 			File:"/demo/logstorage/api.go",
 			Function:"OnLogMessage",
 			Level:"debug",
-			Content:"this is dapr grpc log demo"
+			Content:"this is dapr grpc log demo",
 		},
 	})
 	if err != nil {
