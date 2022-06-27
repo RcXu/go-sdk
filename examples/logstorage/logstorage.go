@@ -57,12 +57,12 @@ func main() {
 		Topic:"dapr-demo",
 		Source:"dapr",
 		Log: &pb.LogstorageMessageContent{
-			"ip":"127.0.0.1",
-			"timestamp":time.Now().Unix(),
-			"file":"/demo/logstorage/api.go",
-			"function":"grpcSendLog",
-			"level":"debug",
-			"content":"this is dapr grpc log demo"
+			Ip:"127.0.0.1",
+			Timestamp:time.Now().Unix(),
+			File:"/demo/logstorage/api.go",
+			Function:"OnLogMessage",
+			Level:"debug",
+			Content:"this is dapr grpc log demo"
 		},
 	})
 	if err != nil {
