@@ -17,10 +17,10 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"strconv"
+	_ "strconv"
 	"time"
 
-	"gopkg.in/alecthomas/kingpin.v2"
+	_ "gopkg.in/alecthomas/kingpin.v2"
 
 	dapr "github.com/dapr/go-sdk/client"
 
@@ -49,22 +49,25 @@ func main() {
 	}
 	defer client.Close()
 	ctx := context.Background()
+	meta := make(map[string]string)
 
-	item, err := client.OnLogMessage(ctx, &pb.LogstorageMessageRequest{
+	logRequest := pb.LogstorageMessageRequest{
 		LogstorageName: "alicloud",
-		Project:"k8s-log-c134d574cd3e6405682e2dda2095ea35d",
-		Logstore:"person-log",
-		Topic:"dapr-demo",
-		Source:"dapr",
+		Project:        "k8s-log-c134d574cd3e6405682e2dda2095ea35d",
+		Logstore:       "person-log",
+		Topic:          "dapr-demo",
+		Source:         "dapr",
+		Metadata:       meta,
 		Log: &pb.LogstorageMessageContent{
-			Ip:"127.0.0.1",
-			Timestamp:time.Now().Unix(),
-			File:"/demo/logstorage/api.go",
-			Function:"OnLogMessage",
-			Level:"debug",
-			Content:"this is dapr grpc log demo",
+			Ip:        "127.0.0.1",
+			Timestamp: time.Now().Unix(),
+			File:      "/demo/logstorage/api.go",
+			Function:  "OnLogMessage",
+			Level:     "debug",
+			Content:   "this is dapr grpc log demo",
 		},
-	})
+	}
+	client.OnLogMessage(ctx, &logRequest)
 	if err != nil {
 		fmt.Printf("Failed to log message: %v\n", err)
 	}
