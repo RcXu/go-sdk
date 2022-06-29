@@ -52,7 +52,7 @@ func main() {
 	meta := make(map[string]string)
 
 	logRequest := pb.LogstorageMessageRequest{
-		LogstorageName: "alicloud",
+		LogstorageName: "alicloud.slsLogstorage",
 		Project:        "k8s-log-c134d574cd3e6405682e2dda2095ea35d",
 		Logstore:       "person-log",
 		Topic:          "dapr-demo",
