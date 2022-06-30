@@ -8,11 +8,17 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (c *GRPCClient) OnLogMessage(ctx context.Context, in *pb.LogstorageMessageRequest) error {
+type LogstorageResponse struct {
+	Success bool
+}
+
+func (c *GRPCClient) OnLogMessage(ctx context.Context, in *pb.LogstorageMessageRequest) (*LogstorageResponse, error) {
 	fmt.Print(in)
 	res, err := c.protoClient.OnLogMessage(ctx, in)
 	fmt.Print(res)
 	fmt.Print(err)
-	return errors.New("request is failed")
-
+	if err != nil {
+		return &LogstorageResponse{}, errors.New("request is failed")
+	}
+	return &LogstorageResponse{Success: res.Success}, nil
 }

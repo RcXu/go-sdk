@@ -49,7 +49,9 @@ func main() {
 	}
 	defer client.Close()
 	ctx := context.Background()
-	meta := make(map[string]string)
+	meta := map[string]string{
+		"request-id": "dafer-323-sef",
+	}
 
 	logRequest := pb.LogstorageMessageRequest{
 		LogstorageName: "alicloud.slslogstorage",
