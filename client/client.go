@@ -177,17 +177,20 @@ type Client interface {
 	// GrpcClient returns the base grpc client if grpc is used and nil otherwise
 	GrpcClient() pb.DaprClient
 
-	OnLogMessage(ctx context.Context, in *pb.LogstorageMessageRequest) (*LogstorageResponse, error)
+	//OnLogMessage(ctx context.Context, in *pb.LogstorageMessageRequest) (*LogstorageResponse, error)
+
+	DistributeTransactionBegin(ctx context.Context, in *pb.BeginTransactionRequest) (*BeginResponse, error)
 }
 
 // NewClient instantiates Dapr client using DAPR_GRPC_PORT environment variable as port.
 // Note, this default factory function creates Dapr client only once. All subsequent invocations
 // will return the already created instance. To create multiple instances of the Dapr client,
 // use one of the parameterized factory functions:
-//   NewClientWithPort(port string) (client Client, err error)
-//   NewClientWithAddress(address string) (client Client, err error)
-//   NewClientWithConnection(conn *grpc.ClientConn) Client
-//   NewClientWithSocket(socket string) (client Client, err error)
+//
+//	NewClientWithPort(port string) (client Client, err error)
+//	NewClientWithAddress(address string) (client Client, err error)
+//	NewClientWithConnection(conn *grpc.ClientConn) Client
+//	NewClientWithSocket(socket string) (client Client, err error)
 func NewClient() (client Client, err error) {
 	port := os.Getenv(daprPortEnvVarName)
 	if port == "" {
