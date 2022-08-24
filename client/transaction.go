@@ -4,20 +4,16 @@ import (
 	"context"
 	"fmt"
 
+	pb "github.com/dapr/dapr/pkg/proto/runtime/v1"
 	"github.com/pkg/errors"
 )
 
-type BeginTransactionRequest struct {
-	StoreName           string
-	BunchTransactionNum int32
-}
-
 type BeginResponse struct {
-	TransactionID       int
+	TransactionID       string
 	BunchTransactionIDs []string
 }
 
-func (c *GRPCClient) DistributeTransactionBegin(ctx context.Context, in *BeginTransactionRequest) (*BeginResponse, error) {
+func (c *GRPCClient) DistributeTransactionBegin(ctx context.Context, in *pb.BeginTransactionRequest) (*BeginResponse, error) {
 	fmt.Print(in)
 	res, err := c.protoClient.DistributeTransactionBegin(ctx, in)
 	fmt.Print(res)

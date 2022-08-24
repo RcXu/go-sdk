@@ -177,9 +177,9 @@ type Client interface {
 	// GrpcClient returns the base grpc client if grpc is used and nil otherwise
 	GrpcClient() pb.DaprClient
 
-	//OnLogMessage(ctx context.Context, in *pb.LogstorageMessageRequest) (*LogstorageResponse, error)
+	// OnLogMessage(ctx context.Context, in *pb.LogstorageMessageRequest) (*LogstorageResponse, error)
 
-	DistributeTransactionBegin(ctx context.Context, in *BeginTransactionRequest) (*BeginResponse, error)
+	DistributeTransactionBegin(ctx context.Context, in *pb.BeginTransactionRequest) (*BeginResponse, error)
 }
 
 // NewClient instantiates Dapr client using DAPR_GRPC_PORT environment variable as port.
