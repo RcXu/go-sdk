@@ -1,5 +1,6 @@
 package client
 
+/*
 import (
 	"context"
 	"fmt"
@@ -22,3 +23,4 @@ func (c *GRPCClient) OnLogMessage(ctx context.Context, in *pb.LogstorageMessageR
 	}
 	return &LogstorageResponse{Success: res.Success}, nil
 }
+*/
