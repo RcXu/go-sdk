@@ -15,7 +15,7 @@ type BeginResponse struct {
 
 type GetDistributeTransactionStateResponse struct {
 	TransactionID          string
-	BunchTransactionStates map[string]int32
+	BunchTransactionStates map[string]string
 }
 
 func (c *GRPCClient) DistributeTransactionBegin(ctx context.Context, in *pb.BeginTransactionRequest) (*BeginResponse, error) {
