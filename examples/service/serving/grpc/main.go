@@ -42,6 +42,12 @@ func main() {
 	if err := s.AddServiceInvocationHandler("echo", echoHandler); err != nil {
 		log.Fatalf("error adding invocation handler: %v", err)
 	}
+	if err := s.AddServiceInvocationHandler("echoCommit", echoHandler); err != nil {
+		log.Fatalf("error adding invocation handler: %v", err)
+	}
+	if err := s.AddServiceInvocationHandler("echoRollback", echoHandler); err != nil {
+		log.Fatalf("error adding invocation handler: %v", err)
+	}
 
 	// add a binding invocation handler
 	if err := s.AddBindingInvocationHandler("run", runHandler); err != nil {
