@@ -28,11 +28,22 @@ func init() {
 
 func main() {
 	kingpin.Command("begin", "Begin a distribute transaction")
+
 	Get := kingpin.Command("get", "Get distribute transaction state.")
-	var transactionID string
-	Get.Flag("id", "transaction ID.").Default("1").StringVar(&transactionID)
-	kingpin.Command("request", "request a distribute transaction")
+	var getTransactionID string
+	Get.Flag("id", "transaction ID.").Default("1").StringVar(&getTransactionID)
+
+	var reqTransactionID string
+	Request := kingpin.Command("request", "request a distribute transaction")
+	Request.Flag("id", "transaction ID.").Default("1").StringVar(&reqTransactionID)
+
 	kingpin.Command("actor", "request a distribute transaction")
+
+	var comTransactionID string
+	Commit := kingpin.Command("commit", "request a distribute transaction")
+	Commit.Flag("id", "transaction ID.").Default("1").StringVar(&comTransactionID)
+
+	kingpin.Command("rollback", "request a distribute transaction")
 
 	// create the client
 	client, err := dapr.NewClientWithPort(port)
@@ -45,11 +56,16 @@ func main() {
 	case "begin":
 		beginAction(client)
 	case "get":
-		getStateAction(client, transactionID)
+		getStateAction(client, getTransactionID)
 	case "request":
-		requestBunchTranaction(client)
+
+		requestBunchTranaction(client, reqTransactionID)
 	case "actor":
 		requestActortBunchTranaction(client)
+	case "commit":
+		requestCommitTransaction(client, comTransactionID)
+	case "rollback":
+		requestRollbackTransaction(client)
 	}
 
 }
@@ -82,10 +98,10 @@ func getStateAction(client dapr.Client, transactionID string) {
 	fmt.Printf("state is : %v\n", reqs)
 }
 
-func requestBunchTranaction(client dapr.Client) {
+func requestBunchTranaction(client dapr.Client, transactionID string) {
 	ctx := context.Background()
 	data := make(map[string]string)
-	data["distribute-transaction-id"] = "transaction-430cb789-066c-4cfe-a98d-5987b0a575b6-6167"
+	data["distribute-transaction-id"] = transactionID
 	data["distribute-bunch-transaction-id"] = "bunch-1"
 	data["distribute-transaction-store"] = "redis"
 	data["say"] = "hello"
@@ -106,7 +122,7 @@ func requestActortBunchTranaction(client dapr.Client) {
 	myActor := new(api.ClientStub)
 	client.ImplActorClientStub(myActor)
 	data := make(map[string]string)
-	data["distribute-transaction-id"] = "transaction-430cb789-066c-4cfe-a98d-5987b0a575b6-6167"
+	data["distribute-transaction-id"] = "transaction-efda9c9f-429e-4369-981d-db3de20c8b58-9108"
 	data["distribute-bunch-transaction-id"] = "bunch-1"
 	data["distribute-transaction-store"] = "redis"
 	data["say"] = "hello"
@@ -116,4 +132,34 @@ func requestActortBunchTranaction(client dapr.Client) {
 		panic(err)
 	}
 	fmt.Println("get invoke result = ", rsp)
+}
+
+func requestCommitTransaction(client dapr.Client, transactionID string) {
+	ctx := context.Background()
+	request := pb.DistributeTransactionScheduleRequest{
+		StoreName:     "redis",
+		TransactionID: transactionID,
+	}
+	fmt.Printf("request is : %v\n", request)
+	reqs, err := client.DistributeTransactionCommit(ctx, &request)
+
+	if err != nil {
+		fmt.Printf("Failed to commit transaction  : %v\n", err)
+	}
+	fmt.Print(reqs)
+}
+
+func requestRollbackTransaction(client dapr.Client) {
+	ctx := context.Background()
+	request := pb.DistributeTransactionScheduleRequest{
+		StoreName:     "redis",
+		TransactionID: "transaction-430cb789-066c-4cfe-a98d-5987b0a575b6-6167",
+	}
+	fmt.Printf("request is : %v\n", request)
+	reqs, err := client.DistributeTransactionRollback(ctx, &request)
+
+	if err != nil {
+		fmt.Printf("Failed to commit transaction  : %v\n", err)
+	}
+	fmt.Print(reqs)
 }

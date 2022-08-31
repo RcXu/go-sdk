@@ -182,6 +182,8 @@ type Client interface {
 	DistributeTransactionBegin(ctx context.Context, in *pb.BeginTransactionRequest) (*BeginResponse, error)
 
 	GetDistributeTransactionState(ctx context.Context, in *pb.GetDistributeTransactionStateRequest) (*GetDistributeTransactionStateResponse, error)
+	DistributeTransactionCommit(ctx context.Context, in *pb.DistributeTransactionScheduleRequest) (*DistributeTransactionScheduleResponse, error)
+	DistributeTransactionRollback(ctx context.Context, in *pb.DistributeTransactionScheduleRequest) (*DistributeTransactionScheduleResponse, error)
 }
 
 // NewClient instantiates Dapr client using DAPR_GRPC_PORT environment variable as port.
