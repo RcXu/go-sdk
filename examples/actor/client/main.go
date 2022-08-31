@@ -15,7 +15,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -49,14 +48,7 @@ func main() {
 	fmt.Println("get user result = ", user)
 
 	// Invoke user defined method Invoke
-	data := make(map[string]string)
-	data["distribute-transaction-id"] = "transaction-3863cd48-93af-48a6-a5ad-660f7919736b-1551"
-	data["distribute-bunch-transaction-id"] = "bunch-1"
-	data["distribute-transaction-store"] = "redis"
-	data["say"] = "hello"
-	d, _ := json.Marshal(data)
-
-	rsp, err := myActor.Invoke(ctx, string(d))
+	rsp, err := myActor.Invoke(ctx, "hi")
 	if err != nil {
 		panic(err)
 	}
@@ -102,10 +94,13 @@ func main() {
 
 	// Invoke user defined method StartReminder, and server side actor start actor reminder with given params.
 	err = myActor.StartReminder(ctx, &api.ReminderRequest{
-		ReminderName: "testReminderName",
-		Period:       "5s",
-		Duration:     "5s",
-		Data:         `"hello"`,
+		ReminderName:                 "testReminderName",
+		Period:                       "5s",
+		Duration:                     "5s",
+		Data:                         `"hello"`,
+		DistributetransactionID:      "transaction-3863cd48-93af-48a6-a5ad-660f7919736b-1551",
+		DistributebunchtransactionID: "bunch-1",
+		Distributetransactionstore:   "redis",
 	})
 	if err != nil {
 		panic(err)

@@ -49,8 +49,11 @@ type TimerRequest struct {
 }
 
 type ReminderRequest struct {
-	ReminderName string `json:"reminder_name"`
-	Duration     string `json:"duration"`
-	Period       string `json:"period"`
-	Data         string `json:"data"`
+	ReminderName                 string `json:"reminder_name"`
+	Duration                     string `json:"duration"`
+	Period                       string `json:"period"`
+	Data                         string `json:"data"`
+	DistributetransactionID      string `json:"distribute-transaction-id"`
+	DistributebunchtransactionID string `json:"distribute-bunch-transaction-id"`
+	Distributetransactionstore   string `json:"distribute-transaction-store"`
 }
