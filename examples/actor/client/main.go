@@ -15,6 +15,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -48,7 +49,14 @@ func main() {
 	fmt.Println("get user result = ", user)
 
 	// Invoke user defined method Invoke
-	rsp, err := myActor.Invoke(ctx, "laurence")
+	data := make(map[string]string)
+	data["distribute-transaction-id"] = "transaction-3863cd48-93af-48a6-a5ad-660f7919736b-1551"
+	data["distribute-bunch-transaction-id"] = "bunch-1"
+	data["distribute-transaction-store"] = "redis"
+	data["say"] = "hello"
+	d, _ := json.Marshal(data)
+
+	rsp, err := myActor.Invoke(ctx, string(d))
 	if err != nil {
 		panic(err)
 	}
